@@ -1,6 +1,41 @@
 # Cropping Code
 
+`crop_tiff_1280_720.py`
 
+This code produces the crops of all the images in the directory that are tiff files.
+
+First command line argument should be the directory with all the images in full size .tiff form. The second command line argument should be the parent directory you want the crops to go. The script will additionally create a directory called `cropped_images` for the images to go.
+
+`original_annotation_script.py`
+
+This code produces the crops of all the annotations files. 
+
+First command line argument is the directory with the full size annotations. Second command line argument is the directory where all the **full size** maps are, do not point it at the cropped images.
+
+It will create a sub directory in the folder where the annotations currently live called `cropped`.
+
+**Converting To JPG**
+
+Tensorflow Object Detection API requires that images are JPG, so run the following script to create JPGs within the `cropped_images` folder.
+
+`convert_crops_to_jpeg.py` 
+
+**Run this after you split the images as below.**
+
+# Train Test Split Code
+
+`create_train_test_split.py`
+
+This file requires `sklearn`. Create copies of the images into new sub directories called `train_split` and `test_split`. Additionally two files called `train_split.txt` and `test_split.txt`, each containing the files in each. *(Can use to get the sizes of the splits)*
+
+Each of the split directories will also have sub directories `annotations` and `images`. 
+
+*Script to run*:
+```shell
+#!/bin/bash
+python3 /home/sgkelley/pixel_link/create_train_test_split.py /mnt/nfs/scratch1/sgkelley/cropped_images /mnt/nfs/scratch1/sgkelley/crop\
+ped
+```
 
 # Changes to Pixel Link Code
 
@@ -11,6 +46,8 @@ This file is used to create the dataset in the correct format by Pixel Link itse
 **You must use the version of this file in this repo for pixel link to detect the dataset correctly**
 
 The train and test split size is based on the size of the crops generated with 1280 x 720 images. If you have more or less those numbers should be changed.
+
+To get the number of the splits, I just run `wc -l train_split.txt` and `wc -l test_split.txt`. 
 
 *Snippet*:
 ```python
